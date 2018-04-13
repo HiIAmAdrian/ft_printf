@@ -6,110 +6,104 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 13:19:12 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/10 15:04:51 by adrian           ###   ########.fr       */
+/*   Updated: 2018/04/13 20:15:18 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
+int             one_for_all(char *str, t_format args, char *pre);
 int	integer_length(int n);
 
-void	ft_int_handler(va_list list, t_format args)
+intmax_t	lenght_int(va_list *list, t_format *args)
 {
-  int	n;
-  int	i;
-  char	*s;
+	intmax_t nr;
 
-  n = va_arg(list, int);
-  s = ft_strdup(ft_itoa(n));
-  if (args.plus == 1 && args.space == 1)
-    args.space = 0;
-  if (args.precision != -1 || args.minus)
-    args.zero = 0;
+	if (args->hh)
+		nr = (char)va_arg(*list, int);
+	else if (args->h)
+		nr = (short)va_arg(*list, int);
+	else if (args->ll)
+		nr = (long long)va_arg(*list, long long);
+	else if (args->l)
+		nr = (long)va_arg(*list, long);
+	else if (args->j)
+		nr = va_arg(*list, intmax_t);
+	else if (args->z)
+		nr = (size_t)va_arg(*list, size_t);
+	else
+		nr = (int)va_arg(*list, int);
+	return (nr);
+}
 
-  i = (n < 0) ? (int)ft_strlen(s) - 1 : (int)ft_strlen(s);
-  //for precision(min char printed(fill with 0))
-  if (args.precision > i)
-  {
-    //pentru pozitive concatenam 0 la inceput pana la diferenta dintre precision si strlen de s
-    if (n >= 0)
-    {
-      i = (int)ft_strlen(s);
-      while (i < args.precision)
-      {
-	s = ft_strjoin("0", s);
-	i++;
-      }
-    }
-    //pt negative scoatem - si il adaugam dupa ce concatenam 0
-    else
-    {
-      s = ft_strsub(s, 1, ((int)ft_strlen(s) - 1));
-      i = (int)ft_strlen(s);
-      while (i < args.precision)
-      {
-	s = ft_strjoin("0", s);
-	i++;
-      }
-      s = ft_strjoin("-", s);
-    }
-  }
+int		ft_int_handler(va_list *list, t_format args)
+{
+	intmax_t	n;
+	char		*str;
+	int			ret;
 
+	n = lenght_int(list, &args);
+	str = ft_strdup(ft_itoa(n));
+	if (args.precision != -1)
+		args.zero = 0;
+	if (n < 0)
+		ret = one_for_all((str + 1), args, "-");
+	else if (args.plus)
+		ret = one_for_all(str, args, "+");
+	else if (args.space)
+		ret = one_for_all(str, args, " ");
+	else
+		ret = one_for_all(str, args, "");
+	return (ret);
+}
 
-  //width
-  if ((int)ft_strlen(s) < args.width)
-  {
-    i = (int)ft_strlen(s);
-    if (args.space == 1 && n >= 0)
-      i++;
-    if (n < 0)
-      s = ft_strsub(s, 1, ((int)ft_strlen(s) - 1));
-    //vedem daca are plus ca sa-l adaugam la width
-    if (args.plus && n >= 0)
-      i++;
-    if (!args.zero)
-    {
-      if (n < 0)
-	s = ft_strjoin("-", s);
-      //umplem cu spatii
-      while (i < args.width)
-      {
-	s = args.minus ? ft_strjoin(s, " ") : ft_strjoin(" ", s);
-	i++;
-      }
-    }
-    else
-    {
-      //umplem cu 0
-      while (i < args.width)
-      {
-	s = ft_strjoin("0", s);
-	i++;
-      }
-      if (n < 0)
-	s = ft_strjoin("-", s);
-    }
-  }
-  //daca inca mai avem spatiu punem ' '
-  if (args.space == 1)
-    if (n >= 0)
-      s = ft_strjoin(" ", s);
+int		precision_len(char *str, t_format args)
+{
+	if (args.precision > (int)ft_strlen(str))
+		return (args.precision);
+	else
+		return ((int)ft_strlen(str));
+}
 
-  //aici punem +
-  if (args.plus && n >= 0)
-  {
-    if (s[0] == ' ')
-    {
-      s = ft_strjoin(" ", s);
-      i = 0;
-      while (s[i] == ' ' && s[i])
-	i++;
-      i--;
-      s[i] = '+';
-    }
-    else
-      s = ft_strjoin("+", s);
-  }
+void	print_width_pre(int len, char c)
+{
+	while (len-- > 0)
+		ft_putchar(c);
+}
 
-  ft_putstr(s);
+int		one_for_all(char *str, t_format args, char *pre)
+{
+	int len;
+
+	len = args.width - precision_len(str, args) - (int)ft_strlen(pre);
+	if (len > 0)
+	{
+		if (args.minus)
+		{
+			ft_putstr(pre);
+			print_width_pre(args.precision - (int)ft_strlen(str), '0');
+			ft_putstr(str);
+			print_width_pre(len, ' ');
+		}
+		else
+		{
+			if (args.zero)
+			{
+				ft_putstr(pre);
+				print_width_pre(len, '0');
+				ft_putstr(str);
+			}
+			else
+			{
+				print_width_pre(len, ' ');
+				ft_putstr(pre);
+				print_width_pre(args.precision - (int)ft_strlen(str), '0');
+				ft_putstr(str);
+			}
+		}
+		return (args.width);
+	}
+	ft_putstr(pre);
+	print_width_pre(args.precision - (int)ft_strlen(str), '0');
+	ft_putstr(str);
+	return (precision_len(str, args) + (int)ft_strlen(pre));
 }

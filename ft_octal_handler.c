@@ -1,47 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_octal_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/04 13:47:25 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/13 20:16:30 by adstan           ###   ########.fr       */
+/*   Created: 2018/04/13 18:37:44 by adstan            #+#    #+#             */
+/*   Updated: 2018/04/13 20:15:34 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
 int             one_for_all(char *str, t_format args, char *pre);
+char            *ft_itoa_ulong(uintmax_t n, int base, int case01);
 
-void init_format(t_format *args)
+int     ft_octal_handler(va_list *list, t_format args)
 {
-	args->minus = 0;
-	args->width = 0;
-	args->zero = 0;
-	args->precision = -1;
-	args->space = 0;
-	args->plus = 0;
-	args->hash = 0;
-	args->l = 0;
-	args->ll = 0;
-	args->j = 0;
-	args->z = 0;
-	args->h = 0;
-	args->hh = 0;
-}
+	uintmax_t   n;  
+	char        *str;
+	int         ret;
 
-int	integer_length(int n)
-{
-	int i;
-
-	i = 0;
-	if (n < 0)
-	  i++;
-	while (n)
-	{
-		i++;
-		n /= 10;
-	}
-	return (i);
+	n = lenght_uint(list, &args);
+	str = ft_strdup(ft_itoa_ulong(n, 8, 0));
+	if (args.precision != -1) 
+		args.zero = 0;
+	if (args.hash)
+		ret = one_for_all(str, args, "0");
+	else
+		ret = one_for_all(str, args, "");
+	return (ret);
 }
