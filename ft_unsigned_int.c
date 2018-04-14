@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:02:02 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/13 20:16:22 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/14 16:15:03 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,11 @@ int		ft_uint_handler(va_list *list, t_format args)
 	int			ret;
 
 	n = lenght_uint(list, &args);
-	str = ft_strdup(ft_itoa_ulong(n, 10, 0));
+	str = ft_itoa_ulong(n, 10, 0);
 	if (args.precision != -1)
 		args.zero = 0;
 	ret = one_for_all(str, args, "");
+	free(str);
 	return (ret);
 }
 

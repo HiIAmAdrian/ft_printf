@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 18:02:03 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/13 20:17:32 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/14 17:00:54 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ int		ft_vezi_ce_format_e(char conv, va_list *list, t_format args)
 	{
 		if (conv == 'D')
 			args.l = 1;
-		return (ft_int_handler(list, args));
+		return(ft_int_handler(list, args));
 	}
 	else if (conv == 'u' || conv == 'U')
 	{
 		if (conv == 'U')
 			args.l = 1;
-		return (ft_uint_handler(list, args));
+		return(ft_uint_handler(list, args));
 	}
 	else if (conv == 'x')
 		return(ft_hex_handler(list, args, 0));
@@ -53,14 +53,26 @@ int		ft_vezi_ce_format_e(char conv, va_list *list, t_format args)
 	else if (conv == 'p')
 		return(ft_ptr_handler(list, args));
 	else if (conv == 's')
-	   ft_string_handler(list, args);
+	{
+		if (args.l)
+			return(widestr_handle(list, &args));
+		return(ft_string_handler(list, args));
+	}
+	else if (conv == 'S')
+		return(widestr_handle(list, &args));
+	else if (conv == 'C')
+		return(widechar_handle(list, &args));
 	else if (conv == 'c')
-	   ft_char_handler(list, args);
+	{
+		if (args.l)
+			return(widechar_handle(list, &args));
+		return(ft_char_handler(list, args));
+	}
+	else if (conv == 'b')
+		return(ft_bin_handler(list, args));
+	else if (conv == 'n')
+		return(ft_n_handler(list));
 	//nu uita ls lc
-	/*
-	//else spit error?
-	//else daca nu gasese nimic valid afiseaza totul de la %(adica args)  
-	*/
 }
 
 int		ft_printf_innerfile(char *format, int i, va_list *list)
@@ -71,6 +83,7 @@ int		ft_printf_innerfile(char *format, int i, va_list *list)
 	if (format[i] == '%' && format[i + 1] == '%')
 	{
 		i++;
+		numaru1++;
 		ft_putchar('%');
 	}
 	else if (format[i] == '%')
@@ -87,8 +100,13 @@ int		ft_printf_innerfile(char *format, int i, va_list *list)
 			(format[i] == '#') ? args.hash = 1 : 0;
 			i++;
 		}
-		printf("argsssss.width: %d\n", args.width);
 		//width
+		if (format[i] == '*')
+		{
+			args.width = va_arg(*list, int);
+			i++;
+		}
+		else
 		while (format[i] >= '0' && format[i] <= '9')
 		{
 			args.width = args.width * 10 + (format[i] - '0');
@@ -97,14 +115,23 @@ int		ft_printf_innerfile(char *format, int i, va_list *list)
 		//precision
 		if (format[i] == '.')
 		{
+
 			i++;
 			args.precision = 0;
-			while (format[i] == '0')
-				i++;
-			while (format[i] >= '0' && format[i] <= '9')
+			if (format[i] == '*')
 			{
-				args.precision = args.precision * 10 + (format[i] - '0');
+				args.precision = va_arg(*list, int);
 				i++;
+			}
+			else
+			{
+				while (format[i] == '0')
+					i++;
+				while (format[i] >= '0' && format[i] <= '9')
+				{
+					args.precision = args.precision * 10 + (format[i] - '0');
+					i++;
+				}
 			}
 		}
 		//management of length modifiers
@@ -138,11 +165,14 @@ int		ft_printf_innerfile(char *format, int i, va_list *list)
 			args.z = 1;
 			i++;
 		}
-		printf ("minus->%d\nplus->%d\nspace->%d\nzero->%d\nhash->%d\nwidth->%d\nprecision->%d\nh->%d\nhh->%d\nj->%d\nz->%d\nl->%d\nll->%d\n",args.minus,args.plus,args.space,args.zero,args.hash,args.width,args.precision,args.h,args.hh,args.j,args.z,args.l,args.ll);
-		ft_vezi_ce_format_e(format[i], list, args);
+		//		printf ("minus->%d\nplus->%d\nspace->%d\nzero->%d\nhash->%d\nwidth->%d\nprecision->%d\nh->%d\nhh->%d\nj->%d\nz->%d\nl->%d\nll->%d\n",args.minus,args.plus,args.space,args.zero,args.hash,args.width,args.precision,args.h,args.hh,args.j,args.z,args.l,args.ll);
+		numaru1 += ft_vezi_ce_format_e(format[i], list, args);
 	}
 	else
+	{
 		ft_putchar(format[i]);
+		numaru1++;
+	}
 	return (i);
 }
 
@@ -155,21 +185,22 @@ int		ft_printf(const char *format, ...)
 
 	va_start(list, format);
 	i = 0;
+	numaru1 = 0;
 	while (format[i])
 	{
 		i =	ft_printf_innerfile((char*)format, i, &list);
 		i++;
 	}
 	va_end(list);
-	return 0;
+	return (numaru1);
 }
 
 int		main()
 {
 	char *str = "NULL";
-	int a;
+	int a = 100000;
 
-	ft_printf("%0c;\n", 'a');
-	printf("%0c", 'a');
-	return 0;
+	ft_printf("%2$ %d\n",  45);
+	printf("dsdf%2$");
+	return (0);
 }
