@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 18:02:03 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/14 17:00:54 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/14 17:36:46 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int		ft_vezi_ce_format_e(char conv, va_list *list, t_format args)
 		return(ft_bin_handler(list, args));
 	else if (conv == 'n')
 		return(ft_n_handler(list));
-	//nu uita ls lc
+	return (0);
 }
 
 int		ft_printf_innerfile(char *format, int i, va_list *list)
@@ -80,7 +80,7 @@ int		ft_printf_innerfile(char *format, int i, va_list *list)
 	t_format	args;
 	init_format(&args);
 	//%% case
-	if (format[i] == '%' && format[i + 1] == '%')
+	if (format[i] == '%' && (format[i + 1] == '%' || format[i + 1] == 0))
 	{
 		i++;
 		numaru1++;
@@ -195,7 +195,7 @@ int		ft_printf(const char *format, ...)
 	return (numaru1);
 }
 
-int		main()
+/*int		main()
 {
 	char *str = "NULL";
 	int a = 100000;
@@ -203,4 +203,4 @@ int		main()
 	ft_printf("%2$ %d\n",  45);
 	printf("dsdf%2$");
 	return (0);
-}
+}*/
