@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 13:19:12 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 17:12:05 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 20:35:09 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int		ft_int_handler(va_list *list, t_format args)
 
 	n = lenght_int(list, &args);
 	str = ft_itoa(n);
+	if (!args.precision && !n)
+		str[0] = 0;
 	if (args.precision != -1)
 		args.zero = 0;
 	if (n < 0)

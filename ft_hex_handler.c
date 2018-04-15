@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:26:35 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 20:14:43 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 20:34:54 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int     ft_hex_handler(va_list *list, t_format args, int case01)
 
 	n = lenght_uint(list, &args);
 	str = ft_itoa_ulong(n, 16, case01);
+	if (!args.precision && !n)
+		str[0] = 0;
 	if (args.precision != -1) 
 		args.zero = 0;
 	if (args.hash && str[0] != '0')

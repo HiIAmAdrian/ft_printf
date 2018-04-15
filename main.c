@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 18:02:03 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 20:09:29 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 20:32:11 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ int		ft_printf(const char *format, ...)
 	char *str = "NULL";
 	int a = 100000;
 
-	ft_printf("%#o;\n", 0);
-	printf("%#o", 0);
+	ft_printf("%5.dZ;\n", 0);
+	printf("%5.uZ", 0);
 	return (0);
 }*/
