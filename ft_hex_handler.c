@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:26:35 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 20:34:54 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 20:50:14 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int     ft_hex_handler(va_list *list, t_format args, int case01)
 		str[0] = 0;
 	if (args.precision != -1) 
 		args.zero = 0;
-	if (args.hash && str[0] != '0')
+	if (args.hash && str[0] != '0' && str[0])
 		ret = one_for_all(str, args, (case01) ? "0X" : "0x");
 	else
 		ret = one_for_all(str, args, "");

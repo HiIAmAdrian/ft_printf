@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 18:02:03 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 20:32:11 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 20:47:49 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@ int		ft_vezi_ce_format_e(char conv, va_list *list, t_format args)
 	if (conv == 'd' || conv == 'D' || conv == 'i')
 	{
 		if (conv == 'D')
+		{
+			init_format(&args);
 			args.l = 1;
+		}
 		return(ft_int_handler(list, args));
 	}
 	else if (conv == 'u' || conv == 'U')
 	{
 		if (conv == 'U')
+		{
+			init_format(&args);
 			args.l = 1;
+		}
 		return(ft_uint_handler(list, args));
 	}
 	else if (conv == 'x')
@@ -33,7 +39,10 @@ int		ft_vezi_ce_format_e(char conv, va_list *list, t_format args)
 	else if (conv == 'o' || conv == 'O')
 	{
 		if (conv == 'O')
+		{
+			init_format(&args);
 			args.l = 1;
+		}
 		return (ft_octal_handler(list, args));
 	}
 	else if (conv == 'p')
@@ -208,7 +217,7 @@ int		ft_printf(const char *format, ...)
 	char *str = "NULL";
 	int a = 100000;
 
-	ft_printf("%5.dZ;\n", 0);
-	printf("%5.uZ", 0);
+	ft_printf("%hU;\n", 4294967296);
+	printf("%hU", 4294967296);
 	return (0);
 }*/
