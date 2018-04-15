@@ -6,11 +6,11 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/09 12:28:29 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/13 17:56:41 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 19:52:22 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "./includes/libft.h"
 
 static char	*lulu(char *s, intmax_t n, int i, int sign)
 {
