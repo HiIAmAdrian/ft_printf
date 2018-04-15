@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 18:02:03 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 20:06:51 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 20:08:37 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ int		ft_printf(const char *format, ...)
 	return (numaru1);
 }
 
-int		main()
+/*int		main()
 {
 	char *str = "NULL";
 	int a = 100000;
@@ -211,4 +211,4 @@ int		main()
 	ft_printf("%#o;\n", 0);
 	printf("%#o", 0);
 	return (0);
-}
+}*/
