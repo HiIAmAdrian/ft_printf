@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/04 13:22:44 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/14 17:08:48 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 14:13:27 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,4 +114,10 @@ int         widestr_width(wchar_t *wstr, t_format *f);
 int         widestr_handle(va_list *lst, t_format *f);
 int         ft_widestrlen(wchar_t *wstr);
 int         ft_putwidestr(wchar_t *wstr, int how_much);
+
+/*
+** ft_undefined_handler.c
+*/
+int			ft_undefined_handler(char c, t_format args);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/29 18:02:03 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 19:47:40 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 15:37:50 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ int		ft_vezi_ce_format_e(char conv, va_list *list, t_format args)
 int		ft_printf_innerfile(char *format, int i, va_list *list)
 {
 	t_format	args;
-	int			found;
-
 	init_format(&args);
 	//%% case
 	if (format[i] == '%' && format[i + 1] == '%')
@@ -79,100 +77,94 @@ int		ft_printf_innerfile(char *format, int i, va_list *list)
 	else if (format[i] == '%')
 	{
 		i++;
-		found = 0;
+		//flags
 		while (format[i] == '-' || format[i] == '+' || format[i] == ' ' ||
-				format[i] == '0' || format[i] == '#' || format[i] == '*' ||
-				(format[i] >= '0' && format[i] <= '9') || (format[i] == 'h' &&
-					format[i + 1] == 'h') || (format[i] == 'l' && format[i] == 'l')
-				|| format[i] == 'l' || format[i] == 'h' || format[i] == 'j' ||
-				format[i] == 'z' || format[i] == '.')
+				format[i] == '0' || format[i] == '#')
 		{
-			//flags
-			(format[i] == '-') ? args.minus = 1, i++ : 0;
-			(format[i] == '+') ? args.plus = 1, i++ : 0;
-			(format[i] == ' ') ? args.space = 1, i++ : 0;
-			(format[i] == '0') ? args.zero = 1, i++ : 0;
-			(format[i] == '#') ? args.hash = 1, i++ : 0;
-			//width
+			(format[i] == '-') ? args.minus = 1 : 0;
+			(format[i] == '+') ? args.plus = 1 : 0;
+			(format[i] == ' ') ? args.space = 1 : 0;
+			(format[i] == '0') ? args.zero = 1 : 0;
+			(format[i] == '#') ? args.hash = 1 : 0;
+			i++;
+		}
+		//width
+		if (format[i] == '*')
+		{
+			args.width = va_arg(*list, int);
+			i++;
+		}
+		else
+		while (format[i] >= '0' && format[i] <= '9')
+		{
+			args.width = args.width * 10 + (format[i] - '0');
+			i++;
+		}
+		//precision
+		if (format[i] == '.')
+		{
+
+			i++;
+			args.precision = 0;
 			if (format[i] == '*')
 			{
-				args.width = va_arg(*list, int);
+				args.precision = va_arg(*list, int);
 				i++;
 			}
-			else if (format[i] >= '1' && format[i] <= '9')
+			else
 			{
-				args.width = 0;
+				while (format[i] == '0')
+					i++;
 				while (format[i] >= '0' && format[i] <= '9')
 				{
-					args.width = args.width * 10 + (format[i] - '0');
+					args.precision = args.precision * 10 + (format[i] - '0');
 					i++;
 				}
-			}
-			//precision
-			if (format[i] == '.')
-			{
-
-				i++;
-				args.precision = 0;
-				if (format[i] == '*')
-				{
-					args.precision = va_arg(*list, int);
-					i++;
-				}
-				else if (format[i] >= '1' && format[i] <= '9')
-				{
-					while (format[i] >= '0' && format[i] <= '9')
-					{
-						args.precision = args.precision * 10 + (format[i] - '0');
-						i++;
-					}
-				}
-			}
-			//management of length modifiers
-			if (format[i] == 'h' && format[i + 1] == 'h')
-			{
-				if (!found)
-					args.hh = 1;
-				found = 1;
-				i += 2;
-			}
-			else if (format[i] == 'l' && format[i + 1] == 'l')
-			{
-				if (!found)
-					args.ll = 1;
-				found = 1;
-				i += 2;
-			}
-			else if (format[i] == 'h')
-			{
-				if (!found)
-					args.h = 1;
-				found = 1;
-				i++;
-			}
-			else if (format[i] == 'l')
-			{
-				if (!found)
-					args.l = 1;
-				found = 1;
-				i++;
-			}
-			else if (format[i] == 'j')
-			{
-				if (!found)
-					args.j = 1;
-				found = 1;
-				i++;
-			}
-			else if (format[i] == 'z')
-			{
-				if (!found)
-					args.z = 1;
-				found = 1;
-				i++;
 			}
 		}
-		//					printf ("minus->%d\nplus->%d\nspace->%d\nzero->%d\nhash->%d\nwidth->%d\nprecision->%d\nh->%d\nhh->%d\nj->%d\nz->%d\nl->%d\nll->%d\n",args.minus,args.plus,args.space,args.zero,args.hash,args.width,args.precision,args.h,args.hh,args.j,args.z,args.l,args.ll);
+		//flags dupa width si precision
+		while (format[i] == '-' || format[i] == '+' || format[i] == ' ' ||
+				format[i] == '0' || format[i] == '#')
+		{
+			(format[i] == '-') ? args.minus = 1 : 0;
+			(format[i] == '+') ? args.plus = 1 : 0;
+			(format[i] == ' ') ? args.space = 1 : 0;
+			(format[i] == '0') ? args.zero = 1 : 0;
+			(format[i] == '#') ? args.hash = 1 : 0;
+			i++;
+		}
+		//management of length modifiers
+		if (format[i] == 'h' && format[i + 1] == 'h')
+		{
+			args.hh = 1;
+			i += 2;
+		}
+		else if (format[i] == 'l' && format[i + 1] == 'l')
+		{
+			args.ll = 1;
+			i+=2;
+		}
+		else if (format[i] == 'h')
+		{
+			args.h = 1;
+			i++;
+		}
+		else if (format[i] == 'l')
+		{
+			args.l = 1;
+			i++;
+		}
+		else if (format[i] == 'j')
+		{
+			args.j = 1;
+			i++;
+		}
+		else if (format[i] == 'z')
+		{
+			args.z = 1;
+			i++;
+		}
+		//		printf ("minus->%d\nplus->%d\nspace->%d\nzero->%d\nhash->%d\nwidth->%d\nprecision->%d\nh->%d\nhh->%d\nj->%d\nz->%d\nl->%d\nll->%d\n",args.minus,args.plus,args.space,args.zero,args.hash,args.width,args.precision,args.h,args.hh,args.j,args.z,args.l,args.ll);
 		numaru1 += ft_vezi_ce_format_e(format[i], list, args);
 	}
 	else
@@ -203,12 +195,12 @@ int		ft_printf(const char *format, ...)
 	return (numaru1);
 }
 
-/*int		main()
+int		main()
 {
 	char *str = "NULL";
 	int a = 100000;
 
-	ft_printf("%lhl", 9223372036854775807);
-	printf("%lhl", 9223372036854775807);
+	ft_printf("@main_ftprintf: %####0000 33..1..#00d\n", 256);
+	printf("@main_ftprintf: %####0*000 *ll*#+d", 4,5);
 	return (0);
-}*/
+}

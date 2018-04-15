@@ -6,13 +6,11 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 13:19:12 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/14 17:46:29 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 17:12:05 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-int             one_for_all(char *str, t_format args, char *pre);
-int	integer_length(int n);
 
 intmax_t	lenght_int(va_list *list, t_format *args)
 {
