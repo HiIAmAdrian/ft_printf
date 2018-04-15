@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:37:44 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/14 16:13:01 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/15 20:07:49 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int     ft_octal_handler(va_list *list, t_format args)
 	str = ft_itoa_ulong(n, 8, 0);
 	if (args.precision != -1) 
 		args.zero = 0;
-	if (args.hash)
+	if (args.hash && str[0] != '0')
 		ret = one_for_all(str, args, "0");
 	else
 		ret = one_for_all(str, args, "");
