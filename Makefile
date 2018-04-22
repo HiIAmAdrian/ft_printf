@@ -6,27 +6,47 @@
 #    By: adstan <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/14 16:34:36 by adstan            #+#    #+#              #
-#    Updated: 2018/04/14 17:50:28 by adstan           ###   ########.fr        #
+#    Updated: 2018/04/22 19:56:01 by adstan           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = ft_prinf
+NAME	= libftprintf.a
+FLAGS	= -Werror -Wall -Wextra
+SRC		= ft_bin_handler.c \
+		  ft_char_handler.c \
+		  ft_flagsetc.c \
+		  ft_hex_handler.c \
+		  ft_int_handler.c \
+		  ft_n_handler.c \
+		  ft_octal_handler.c \
+		  ft_ptr_handler.c \
+		  ft_str_handler.c \
+		  ft_undefined_handler.c \
+		  ft_unsigned_int.c \
+		  ft_wchar_handler.c \
+		  ft_wstr_handle.c \
+		  utils.c \
+		  main.c
 
-SRC = *.c
+OBJ		= $(SRC:.c=.o)
 
-OBJ = *.o
+all: $(NAME)
 
-all:$(NAME)
+$(NAME): $(OBJ)
+	@make -C libft
+	@cp libft/libft.a ./$(NAME)
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
 
-$(NAME):
-	@gcc -Wall -Werror -Wextra -c ft_printf.h ./libft/includes/libft.h ./libft/*.c *.c
-	@ar rc libftprintf.a *.o
-	@ranlib libftprintf.a
+$(OBJ): $(SRC)
+	@gcc $(FLAGS) -I. -c $(SRC)
 
 clean:
-	@/bin/rm -f *.o
+	@rm -f $(OBJ)
+	@make -C libft/ clean
 
 fclean: clean
-	@/bin/rm -f libftprintf.a
+	@make -C libft/ fclean
+	@rm -f $(NAME)
 
 re: fclean all

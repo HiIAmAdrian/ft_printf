@@ -6,11 +6,9 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 15:22:12 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/14 16:34:32 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/22 16:40:11 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "ft_printf.h"
 
 #include "ft_printf.h"
 
@@ -20,13 +18,11 @@ void		ft_putwide(wchar_t c)
 		ft_putchar(c);
 	else if (c <= 0x7FF)
 	{
-
 		ft_putchar((c >> 6) + 0xC0);
 		ft_putchar((c & 0x3F) + 0x80);
 	}
 	else if (c <= 0xFFFF)
 	{
-
 		ft_putchar((c >> 12) + 0xE0);
 		ft_putchar(((c >> 6) & 0x3F) + 0x80);
 		ft_putchar((c & 0x3F) + 0x80);

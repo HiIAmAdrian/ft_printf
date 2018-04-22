@@ -6,20 +6,18 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/13 18:02:02 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 20:45:07 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/22 16:46:30 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int             one_for_all(char *str, t_format args, char *pre);
-
 char		*ft_itoa_ulong(uintmax_t n, int base, int case01)
 {
 	uintmax_t		temp;
-	int		len;
-	char	*str;
-	int		i;
+	int				len;
+	char			*str;
+	int				i;
 
 	temp = n;
 	len = 2;
@@ -44,14 +42,14 @@ uintmax_t	lenght_uint(va_list *list, t_format *args)
 {
 	uintmax_t nr;
 
-	if (args->hh)
+	if (args->l)
+		nr = (unsigned long)va_arg(*list, unsigned long);
+	else if (args->hh)
 		nr = (unsigned char)va_arg(*list, unsigned int);
 	else if (args->h)
 		nr = (unsigned short)va_arg(*list, unsigned int);
 	else if (args->ll)
 		nr = (unsigned long long)va_arg(*list, unsigned long long);
-	else if (args->l)
-		nr = (unsigned long)va_arg(*list, unsigned long);
 	else if (args->j)
 		nr = va_arg(*list, uintmax_t);
 	else if (args->z)
@@ -61,7 +59,7 @@ uintmax_t	lenght_uint(va_list *list, t_format *args)
 	return (nr);
 }
 
-int		ft_uint_handler(va_list *list, t_format args)
+int			ft_uint_handler(va_list *list, t_format args)
 {
 	uintmax_t	n;
 	char		*str;
@@ -77,13 +75,3 @@ int		ft_uint_handler(va_list *list, t_format args)
 	free(str);
 	return (ret);
 }
-
-
-
-
-
-
-
-
-
-

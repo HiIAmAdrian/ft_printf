@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/15 14:01:23 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 14:37:58 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/22 16:46:48 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int		ft_undefined_handler(char c, t_format args)
 	char	*str;
 	int		ret;
 
+	args.precision = -1;
 	str = ft_memalloc(2);
 	str[0] = c;
 	if (args.precision != -1)

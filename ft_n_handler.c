@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/14 14:12:04 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/14 16:21:38 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/22 17:03:09 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int		ft_n_handler(va_list *list)
 	int *p;
 
 	p = va_arg(*list, int*);
-	*p = numaru1;
+	*p = g_numaru1;
 	return (0);
 }
-

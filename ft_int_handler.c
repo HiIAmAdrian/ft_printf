@@ -6,7 +6,7 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 13:19:12 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/15 20:35:09 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/22 19:45:43 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ intmax_t	lenght_int(va_list *list, t_format *args)
 {
 	intmax_t nr;
 
-	if (args->hh)
+	if (args->l)
+		nr = (long)va_arg(*list, long);
+	else if (args->hh)
 		nr = (char)va_arg(*list, int);
 	else if (args->h)
 		nr = (short)va_arg(*list, int);
 	else if (args->ll)
 		nr = (long long)va_arg(*list, long long);
-	else if (args->l)
-		nr = (long)va_arg(*list, long);
 	else if (args->j)
 		nr = va_arg(*list, intmax_t);
 	else if (args->z)
@@ -33,7 +33,7 @@ intmax_t	lenght_int(va_list *list, t_format *args)
 	return (nr);
 }
 
-int		ft_int_handler(va_list *list, t_format args)
+int			ft_int_handler(va_list *list, t_format args)
 {
 	intmax_t	n;
 	char		*str;
@@ -57,7 +57,7 @@ int		ft_int_handler(va_list *list, t_format args)
 	return (ret);
 }
 
-int		precision_len(char *str, t_format args)
+int			precision_len(char *str, t_format args)
 {
 	if (args.precision > (int)ft_strlen(str))
 		return (args.precision);
@@ -65,13 +65,24 @@ int		precision_len(char *str, t_format args)
 		return ((int)ft_strlen(str));
 }
 
-void	print_width_pre(int len, char c)
+void		one_for_all2(char *str, char *pre, t_format args, int len)
 {
-	while (len-- > 0)
-		ft_putchar(c);
+	if (args.zero)
+	{
+		ft_putstr(pre);
+		print_width_pre(len, '0');
+		ft_putstr(str);
+	}
+	else
+	{
+		print_width_pre(len, ' ');
+		ft_putstr(pre);
+		print_width_pre(args.precision - (int)ft_strlen(str), '0');
+		ft_putstr(str);
+	}
 }
 
-int		one_for_all(char *str, t_format args, char *pre)
+int			one_for_all(char *str, t_format args, char *pre)
 {
 	int len;
 
@@ -86,21 +97,7 @@ int		one_for_all(char *str, t_format args, char *pre)
 			print_width_pre(len, ' ');
 		}
 		else
-		{
-			if (args.zero)
-			{
-				ft_putstr(pre);
-				print_width_pre(len, '0');
-				ft_putstr(str);
-			}
-			else
-			{
-				print_width_pre(len, ' ');
-				ft_putstr(pre);
-				print_width_pre(args.precision - (int)ft_strlen(str), '0');
-				ft_putstr(str);
-			}
-		}
+			one_for_all2(str, pre, args, len);
 		return (args.width);
 	}
 	ft_putstr(pre);

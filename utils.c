@@ -6,15 +6,13 @@
 /*   By: adstan <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/04 13:47:25 by adstan            #+#    #+#             */
-/*   Updated: 2018/04/14 16:15:09 by adstan           ###   ########.fr       */
+/*   Updated: 2018/04/22 17:00:15 by adstan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int             one_for_all(char *str, t_format args, char *pre);
-
-void init_format(t_format *args)
+void	init_format(t_format *args)
 {
 	args->minus = 0;
 	args->width = 0;
@@ -31,17 +29,23 @@ void init_format(t_format *args)
 	args->hh = 0;
 }
 
-int	integer_length(int n)
+int		integer_length(int n)
 {
 	int i;
 
 	i = 0;
 	if (n < 0)
-	  i++;
+		i++;
 	while (n)
 	{
 		i++;
 		n /= 10;
 	}
 	return (i);
+}
+
+void	print_width_pre(int len, char c)
+{
+	while (len-- > 0)
+		ft_putchar(c);
 }
